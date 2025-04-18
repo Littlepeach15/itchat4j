@@ -1,17 +1,5 @@
 package cn.zhouyafeng.itchat4j.demo.demo2;
 
-import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import cn.zhouyafeng.itchat4j.Wechat;
 import cn.zhouyafeng.itchat4j.beans.BaseMsg;
 import cn.zhouyafeng.itchat4j.core.Core;
@@ -19,6 +7,16 @@ import cn.zhouyafeng.itchat4j.face.IMsgHandlerFace;
 import cn.zhouyafeng.itchat4j.utils.MyHttpClient;
 import cn.zhouyafeng.itchat4j.utils.enums.MsgTypeEnum;
 import cn.zhouyafeng.itchat4j.utils.tools.DownloadTools;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.util.EntityUtils;
+
+import java.io.File;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * 图灵机器人示例
@@ -33,7 +31,8 @@ public class TulingRobot implements IMsgHandlerFace {
 	MyHttpClient myHttpClient = Core.getInstance().getMyHttpClient();
 	String url = "http://www.tuling123.com/openapi/api";
 	String apiKey = "597b34bea4ec4c85a775c469c84b6817"; // 这里是我申请的图灵机器人API接口，每天只能5000次调用，建议自己去申请一个，免费的:)
-
+	static String path = "C:\\workspace\\idea\\itchat4j\\data";
+	
 	@Override
 	public String textMsgHandle(BaseMsg msg) {
 		String result = "";
@@ -66,7 +65,7 @@ public class TulingRobot implements IMsgHandlerFace {
 	@Override
 	public String voiceMsgHandle(BaseMsg msg) {
 		String fileName = String.valueOf(new Date().getTime());
-		String voicePath = "D://itchat4j/voice" + File.separator + fileName + ".mp3";
+		String voicePath = path+"/voice" + File.separator + fileName + ".mp3";
 		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VOICE.getType(), voicePath);
 		return "收到语音";
 	}
@@ -74,14 +73,14 @@ public class TulingRobot implements IMsgHandlerFace {
 	@Override
 	public String viedoMsgHandle(BaseMsg msg) {
 		String fileName = String.valueOf(new Date().getTime());
-		String viedoPath = "D://itchat4j/viedo" + File.separator + fileName + ".mp4";
+		String viedoPath = path+"/viedo" + File.separator + fileName + ".mp4";
 		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VIEDO.getType(), viedoPath);
 		return "收到视频";
 	}
 
 	public static void main(String[] args) {
 		IMsgHandlerFace msgHandler = new TulingRobot();
-		Wechat wechat = new Wechat(msgHandler, "D://itchat4j/login");
+		Wechat wechat = new Wechat(msgHandler, path+"/login");
 		wechat.start();
 	}
 
